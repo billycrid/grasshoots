@@ -1,0 +1,45 @@
+/* The approved eyebrow-free wordmark is displayed from the supplied artwork.
+   This viewport preserves the original geometry; no replacement owl is invented. */
+.brand-wordmark {
+  position: relative;
+  overflow: hidden;
+  width: 220px;
+  aspect-ratio: 800 / 140;
+  background: #fff;
+}
+.brand-wordmark img {
+  position: absolute;
+  width: 181%;
+  max-width: none;
+  left: -17%;
+  top: -15%;
+}
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -80px;
+  z-index: 9999;
+  padding: 12px 20px;
+  background: #101820;
+  color: white;
+  border-radius: 10px;
+}
+.skip-link:focus {
+  top: 16px;
+}
+:focus-visible {
+  outline: 3px solid #246b4a;
+  outline-offset: 3px;
+}
+html {
+  min-width: 320px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

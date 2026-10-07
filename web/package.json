@@ -1,0 +1,48 @@
+{
+  "name": "grasshoots",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25",
+    "npm": ">=11 <12"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "dev": "concurrently --kill-others --names api,web \"npm run dev -w @grasshoots/api\" \"npm run dev -w @grasshoots/web\"",
+    "build": "npm run build -w @grasshoots/contracts && npm run build -w @grasshoots/ui && npm run build -w @grasshoots/api && npm run build -w @grasshoots/web",
+    "typecheck": "tsc --noEmit -p tsconfig.tools.json && npm run typecheck --workspaces --if-present",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build",
+    "db:up": "docker compose up -d --wait postgres",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres",
+    "db:migrate": "npm run db:migrate -w @grasshoots/api",
+    "db:rollback": "npm run db:rollback -w @grasshoots/api",
+    "start:api": "npm run start -w @grasshoots/api",
+    "preview": "npm run preview -w @grasshoots/web"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@playwright/test": "1.58.2",
+    "@types/node": "^24.0.0",
+    "concurrently": "^9.2.0",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "prettier": "^3.6.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.48.0",
+    "vitest": "^4.0.0"
+  }
+}

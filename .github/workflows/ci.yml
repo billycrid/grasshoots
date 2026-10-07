@@ -1,0 +1,38 @@
+name: Phase 0 checks
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    working-directory: web
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run setup
+      - run: npm run db:up
+      - run: npm run db:migrate
+      - name: Verify repeatable migrations and rollback on disposable CI database
+        run: |
+          npm run db:migrate
+          npm run db:rollback
+          npm run db:migrate
+      - run: npm run check
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: web/playwright-report/
+      - run: npm run db:down
+        if: always()

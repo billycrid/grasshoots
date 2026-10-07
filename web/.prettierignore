@@ -1,0 +1,9 @@
+node_modules
+dist
+package-lock.json
+playwright-report
+test-results
+docs/product-spec.md
+docs/design-spec.md
+docs/assets
+packages/ui/src/theme.ts
